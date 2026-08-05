@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Cụ Chia Nhóm Ngẫu Nhiên</title>
+    <!-- Tích hợp Font chữ Inter hiện đại -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Liên kết đến file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Chia Nhóm Ngẫu Nhiên 🎲</h1>
+            <p>Nhập danh sách, cấu hình số lượng và chia nhóm chỉ trong 1 giây.</p>
+        </header>
+
+        <main class="app-layout">
+            <!-- Cột trái: Nhập liệu -->
+            <section class="input-section card">
+                <label for="namesList">Danh sách lớp (mỗi tên 1 dòng):</label>
+                <textarea id="namesList" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Văn C..."></textarea>
+                
+                <div class="settings-grid">
+                    <div>
+                        <label>Phương pháp chia:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="splitType" value="byGroupCount" checked> 
+                                Chia theo số nhóm
+                            </label>
+                            <label>
+                                <input type="radio" name="splitType" value="byStudentCount"> 
+                                Chia theo số người/nhóm
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label id="numberLabel" for="numberInput">Số lượng nhóm muốn chia:</label>
+                        <input type="number" id="numberInput" min="1" value="4">
+                    </div>
+                </div>
+                
+                <button id="generateBtn">⚡ Tiến Hành Chia Nhóm</button>
+            </section>
+            
+            <!-- Cột phải: Kết quả -->
+            <section class="output-section">
+                <div id="results" class="results-grid">
+                    <div class="empty-state">
+                        Kết quả chia nhóm sẽ hiển thị ở đây
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy 2026 hoana2007 - Created by Gemini</p>
+    </footer>
+
+    <!-- Liên kết đến file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
