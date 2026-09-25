@@ -49,6 +49,16 @@
             
             <!-- Cột phải: Kết quả -->
             <section class="output-section">
+                <div class="results-toolbar">
+                    <div>
+                        <h2>Kết quả chia nhóm</h2>
+                        <p id="saveStatus" class="save-status" aria-live="polite">Chưa có nhóm nào được lưu</p>
+                    </div>
+                    <div class="action-group">
+                        <button id="saveBtn" class="secondary-button" type="button" disabled>Lưu nhóm</button>
+                        <button id="exportBtn" class="export-button" type="button" disabled>Xuất Excel</button>
+                    </div>
+                </div>
                 <div id="results" class="results-grid">
                     <div class="empty-state">
                         Kết quả chia nhóm sẽ hiển thị ở đây
@@ -63,6 +73,7 @@
     </footer>
 
     <!-- Liên kết đến file JavaScript -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

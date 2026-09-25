@@ -161,6 +161,60 @@ body {
 }
 
 /* ================= KẾT QUẢ ================= */
+.results-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.results-toolbar h2 {
+    color: #111827;
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+}
+
+.save-status {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.action-group {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.action-group button {
+    width: auto;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.secondary-button {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.secondary-button:hover:not(:disabled) {
+    background-color: #d1d5db;
+}
+
+.export-button {
+    background-color: #047857;
+}
+
+.export-button:hover:not(:disabled) {
+    background-color: #065f46;
+}
+
+button:disabled {
+    background-color: #d1d5db;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -227,5 +281,16 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (max-width: 560px) {
+    .results-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .action-group button {
+        flex: 1;
     }
 }

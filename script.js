@@ -5,6 +5,58 @@ const numberLabel = document.getElementById('numberLabel');
 const generateBtn = document.getElementById('generateBtn');
 const resultsContainer = document.getElementById('results');
 const radioButtons = document.getElementsByName('splitType');
+const saveBtn = document.getElementById('saveBtn');
+const exportBtn = document.getElementById('exportBtn');
+const saveStatus = document.getElementById('saveStatus');
+const savedGroupsKey = 'randomGroups:lastSaved';
+let currentGroups = [];
+let isCurrentGroupsSaved = false;
+
+function updateActionButtons() {
+    const hasGroups = currentGroups.length > 0;
+    saveBtn.disabled = !hasGroups || isCurrentGroupsSaved;
+    exportBtn.disabled = !hasGroups;
+}
+
+function saveGroups() {
+    if (currentGroups.length === 0) {
+        return;
+    }
+
+    const savedData = {
+        createdAt: new Date().toISOString(),
+        groups: currentGroups
+    };
+    localStorage.setItem(savedGroupsKey, JSON.stringify(savedData));
+    isCurrentGroupsSaved = true;
+    saveStatus.textContent = `Đã lưu lúc ${new Date(savedData.createdAt).toLocaleTimeString('vi-VN')}`;
+    updateActionButtons();
+}
+
+function exportGroupsToExcel() {
+    if (currentGroups.length === 0 || typeof XLSX === 'undefined') {
+        alert('Không thể xuất Excel khi chưa có nhóm hoặc thư viện Excel chưa sẵn sàng.');
+        return;
+    }
+
+    const rows = [];
+    currentGroups.forEach((group, groupIndex) => {
+        group.forEach((student, studentIndex) => {
+            rows.push({
+                'Nhóm': `Nhóm ${groupIndex + 1}`,
+                'STT': studentIndex + 1,
+                'Họ và tên': student
+            });
+        });
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    worksheet['!cols'] = [{ wch: 14 }, { wch: 8 }, { wch: 32 }];
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Danh sách nhóm');
+    const date = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(workbook, `danh-sach-nhom-${date}.xlsx`);
+}
 
 // Cập nhật nhãn (label) khi đổi phương pháp chia
 radioButtons.forEach(radio => {
@@ -78,6 +130,10 @@ generateBtn.addEventListener('click', () => {
 
     // Xóa kết quả cũ và hiển thị kết quả mới
     resultsContainer.innerHTML = '';
+    currentGroups = groups;
+    isCurrentGroupsSaved = false;
+    saveStatus.textContent = 'Nhóm mới đã tạo, hãy lưu trước khi rời trang';
+    updateActionButtons();
 
     groups.forEach((group, index) => {
         // Tạo giao diện cho từng nhóm
@@ -104,3 +160,19 @@ generateBtn.addEventListener('click', () => {
         resultsContainer.appendChild(groupCard);
     });
 });
+
+saveBtn.addEventListener('click', saveGroups);
+exportBtn.addEventListener('click', exportGroupsToExcel);
+
+const lastSavedGroups = localStorage.getItem(savedGroupsKey);
+if (lastSavedGroups) {
+    try {
+        const savedData = JSON.parse(lastSavedGroups);
+        const savedDate = new Date(savedData.createdAt);
+        if (Array.isArray(savedData.groups) && savedData.groups.length > 0 && !isNaN(savedDate)) {
+            saveStatus.textContent = `Lần lưu gần nhất: ${savedDate.toLocaleString('vi-VN')}`;
+        }
+    } catch (error) {
+        localStorage.removeItem(savedGroupsKey);
+    }
+}
